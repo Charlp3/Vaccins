@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Vaccins</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fff8dc;
+    margin: 0;
+}
+
+header {
+    background: #f4c430;
+    color: #000;
+    text-align: center;
+    padding: 14px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header small {
+    display: block;
+    margin-top: 4px;
+}
+
+nav {
+    display: flex;
+    background: #ffe680;
+}
+
+nav button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: #ffe680;
+    font-weight: bold;
+}
+
+nav button.active {
+    background: #f4c430;
+}
+
+section {
+    display: none;
+    padding: 12px;
+}
+
+section.active {
+    display: block;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+button.add {
+    background: #f4c430;
+    border: none;
+    padding: 8px;
+    width: 100%;
+    font-weight: bold;
+}
+
+button.del {
+    background: #c0392b;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+tr:nth-child(even) {
+    background: #fff2b3;
+}
+
+tr:nth-child(odd) {
+    background: #ffffff;
+}
+
+a {
+    color: #1a5276;
+    word-break: break-all;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Vaccins</h1>
+    <small>v1.0 – © Pierre Charlier 2025</small>
+</header>
+
+<nav>
+    <button onclick="showTab('fiche')" class="active">Ma fiche</button>
+    <button onclick="showTab('vaccins')">Vaccinations</button>
+    <button onclick="showTab('notices')">Notices</button>
+    <button onclick="showTab('resume')">Résumé</button>
+</nav>
+
+<section id="fiche" class="active">
+    <h3>Informations personnelles</h3>
+    <input id="nom" placeholder="Nom">
+    <input id="prenom" placeholder="Prénom">
+    <input id="naissance" type="date">
+    <textarea id="remarque" placeholder="Remarques"></textarea>
+</section>
+
+<section id="vaccins">
+    <h3>Vaccinations</h3>
+    <input id="vaccinNom" placeholder="Nom du vaccin">
+    <input id="vaccinDate" type="date">
+    <button class="add" onclick="addVaccin()">Ajouter</button>
+
+    <table>
+        <thead>
+            <tr><th>Vaccin</th><th>Date</th><th></th></tr>
+        </thead>
+        <tbody id="vaccinTable"></tbody>
+    </table>
+</section>
+
+<section id="notices">
+    <h3>Notices</h3>
+    <input id="noticeNom" placeholder="Nom du vaccin">
+    <input id="noticeURL" placeholder="URL de la notice">
+    <button class="add" onclick="addNotice()">Ajouter</button>
+
+    <table>
+        <thead>
+            <tr><th>Vaccin</th><th>Notice</th><th></th></tr>
+        </thead>
+        <tbody id="noticeTable"></tbody>
+    </table>
+</section>
+
+<section id="resume">
+    <h3>Résumé vaccinal</h3>
+    <table>
+        <thead>
+            <tr><th>Vaccin</th><th>Date</th></tr>
+        </thead>
+        <tbody id="resumeTable"></tbody>
+    </table>
+</section>
+
+<script>
+let data = JSON.parse(localStorage.getItem("vaccinsData")) || {
+    fiche: {},
+    vaccins: [],
+    notices: []
+};
+
+function save() {
+    localStorage.setItem("vaccinsData", JSON.stringify(data));
+    render();
+}
+
+function showTab(id) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    event.target.classList.add("active");
+}
+
+function addVaccin() {
+    const nom = vaccinNom.value;
+    const date = vaccinDate.value;
+    if (!nom || !date) return;
+    data.vaccins.push({ nom, date });
+    vaccinNom.value = "";
+    vaccinDate.value = "";
+    save();
+}
+
+function addNotice() {
+    const nom = noticeNom.value;
+    const url = noticeURL.value;
+    if (!nom || !url) return;
+    data.notices.push({ nom, url });
+    noticeNom.value = "";
+    noticeURL.value = "";
+    save();
+}
+
+function delVaccin(i) {
+    data.vaccins.splice(i,1);
+    save();
+}
+
+function delNotice(i) {
+    data.notices.splice(i,1);
+    save();
+}
+
+function render() {
+    vaccinTable.innerHTML = "";
+    noticeTable.innerHTML = "";
+    resumeTable.innerHTML = "";
+
+    data.vaccins.forEach((v,i) => {
+        vaccinTable.innerHTML += `<tr>
+            <td>${v.nom}</td>
+            <td>${v.date}</td>
+            <td><button class="del" onclick="delVaccin(${i})">✕</button></td>
+        </tr>`;
+        resumeTable.innerHTML += `<tr><td>${v.nom}</td><td>${v.date}</td></tr>`;
+    });
+
+    data.notices.forEach((n,i) => {
+        noticeTable.innerHTML += `<tr>
+            <td>${n.nom}</td>
+            <td><a href="${n.url}" target="_blank">${n.url}</a></td>
+            <td><button class="del" onclick="delNotice(${i})">✕</button></td>
+        </tr>`;
+    });
+}
+
+["nom","prenom","naissance","remarque"].forEach(id => {
+    document.getElementById(id).value = data.fiche[id] || "";
+    document.getElementById(id).addEventListener("input", e => {
+        data.fiche[id] = e.target.value;
+        save();
+    });
+});
+
+render();
+</script>
+
+</body>
+</html>
