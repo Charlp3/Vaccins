@@ -8,46 +8,51 @@
 <style>
 body {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #fff8dc;
+    background: #f0d97a;
     margin: 0;
+    font-size: 18px;
 }
 
 header {
-    background: #f4c430;
+    background: #d4ac0d;
     color: #000;
     text-align: center;
-    padding: 14px;
+    padding: 16px;
 }
 
 header h1 {
     margin: 0;
+    font-size: 28px;
 }
 
 header small {
     display: block;
-    margin-top: 4px;
+    margin-top: 6px;
+    font-size: 14px;
 }
 
 nav {
     display: flex;
-    background: #ffe680;
+    background: #c9a000;
 }
 
 nav button {
     flex: 1;
-    padding: 12px;
+    padding: 14px;
     border: none;
-    background: #ffe680;
+    background: #c9a000;
     font-weight: bold;
+    font-size: 16px;
 }
 
 nav button.active {
-    background: #f4c430;
+    background: #a88900;
+    color: white;
 }
 
 section {
     display: none;
-    padding: 12px;
+    padding: 14px;
 }
 
 section.active {
@@ -56,45 +61,67 @@ section.active {
 
 input, textarea {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    background: #fff3b0;
+    border: 1px solid #8a6d00;
+}
+
+textarea {
+    height: 80px;
 }
 
 button.add {
-    background: #f4c430;
+    background: #a88900;
+    color: white;
     border: none;
-    padding: 8px;
+    padding: 10px;
     width: 100%;
     font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 
 button.del {
-    background: #c0392b;
+    background: #a93226;
     color: white;
     border: none;
-    padding: 4px 8px;
+    padding: 6px 10px;
+    font-size: 16px;
+}
+
+button.util {
+    background: #7d6608;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    margin-bottom: 8px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 17px;
 }
 
 th, td {
-    padding: 8px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    border: 1px solid #7d6608;
 }
 
 tr:nth-child(even) {
-    background: #fff2b3;
+    background: #f7dc6f;
 }
 
 tr:nth-child(odd) {
-    background: #ffffff;
+    background: #fff9c4;
 }
 
 a {
-    color: #1a5276;
+    color: #154360;
     word-break: break-all;
 }
 </style>
@@ -104,7 +131,7 @@ a {
 
 <header>
     <h1>Vaccins</h1>
-    <small>v1.0 – © Pierre Charlier 2025</small>
+    <small>v1.1 – © Pierre Charlier 2025</small>
 </header>
 
 <nav>
@@ -120,6 +147,11 @@ a {
     <input id="prenom" placeholder="Prénom">
     <input id="naissance" type="date">
     <textarea id="remarque" placeholder="Remarques"></textarea>
+
+    <button class="util" onclick="save()">💾 Sauvegarder</button>
+    <button class="util" onclick="exportJSON()">⬇️ Exporter JSON</button>
+    <input type="file" id="importFile" accept=".json" onchange="importJSON(this)" style="display:none">
+    <button class="util" onclick="document.getElementById('importFile').click()">⬆️ Importer JSON</button>
 </section>
 
 <section id="vaccins">
@@ -169,7 +201,33 @@ let data = JSON.parse(localStorage.getItem("vaccinsData")) || {
 
 function save() {
     localStorage.setItem("vaccinsData", JSON.stringify(data));
-    render();
+    alert("Données sauvegardées");
+}
+
+function exportJSON() {
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "vaccins.json";
+    a.click();
+}
+
+function importJSON(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        try {
+            const obj = JSON.parse(e.target.result);
+            if (!obj.vaccins || !obj.notices || !obj.fiche) throw "invalid";
+            data = obj;
+            save();
+            render();
+        } catch {
+            alert("Fichier JSON invalide");
+        }
+    };
+    reader.readAsText(file);
 }
 
 function showTab(id) {
@@ -180,33 +238,33 @@ function showTab(id) {
 }
 
 function addVaccin() {
-    const nom = vaccinNom.value;
-    const date = vaccinDate.value;
-    if (!nom || !date) return;
-    data.vaccins.push({ nom, date });
+    if (!vaccinNom.value || !vaccinDate.value) return;
+    data.vaccins.push({ nom: vaccinNom.value, date: vaccinDate.value });
     vaccinNom.value = "";
     vaccinDate.value = "";
     save();
+    render();
 }
 
 function addNotice() {
-    const nom = noticeNom.value;
-    const url = noticeURL.value;
-    if (!nom || !url) return;
-    data.notices.push({ nom, url });
+    if (!noticeNom.value || !noticeURL.value) return;
+    data.notices.push({ nom: noticeNom.value, url: noticeURL.value });
     noticeNom.value = "";
     noticeURL.value = "";
     save();
+    render();
 }
 
 function delVaccin(i) {
     data.vaccins.splice(i,1);
     save();
+    render();
 }
 
 function delNotice(i) {
     data.notices.splice(i,1);
     save();
+    render();
 }
 
 function render() {
@@ -230,13 +288,15 @@ function render() {
             <td><button class="del" onclick="delNotice(${i})">✕</button></td>
         </tr>`;
     });
+
+    ["nom","prenom","naissance","remarque"].forEach(id => {
+        document.getElementById(id).value = data.fiche[id] || "";
+    });
 }
 
 ["nom","prenom","naissance","remarque"].forEach(id => {
-    document.getElementById(id).value = data.fiche[id] || "";
     document.getElementById(id).addEventListener("input", e => {
         data.fiche[id] = e.target.value;
-        save();
     });
 });
 
