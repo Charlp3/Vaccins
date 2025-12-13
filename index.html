@@ -6,123 +6,140 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f0d97a;
-    margin: 0;
-    font-size: 18px;
+/* ===== Base ===== */
+body{
+    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    background:#e1e1e1;          /* gris perle */
+    margin:0;
+    font-size:18px;
+    color:#333;
 }
 
-header {
-    background: #d4ac0d;
-    color: #000;
-    text-align: center;
-    padding: 16px;
+/* ===== En-tête ===== */
+header{
+    background:#b3b6bb;          /* gris doux */
+    color:#2e2e2e;
+    text-align:center;
+    padding:16px;
+}
+header h1{
+    margin:0;
+    font-size:28px;
+    font-weight:600;
+}
+header small{
+    display:block;
+    margin-top:6px;
+    font-size:14px;
+    color:#4f4f4f;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 28px;
+/* ===== Navigation ===== */
+nav{
+    display:flex;
+    background:#c4c7cc;
+}
+nav button{
+    flex:1;
+    padding:14px;
+    border:none;
+    background:#c4c7cc;
+    font-weight:600;
+    font-size:16px;
+    color:#444;
+}
+nav button.active{
+    background:#aeb1b6;
+    color:#2f2f2f;
 }
 
-header small {
-    display: block;
-    margin-top: 6px;
-    font-size: 14px;
+/* ===== Sections ===== */
+section{
+    display:none;
+    padding:14px;
+}
+section.active{
+    display:block;
 }
 
-nav {
-    display: flex;
-    background: #c9a000;
+/* ===== Champs (GRIS, PAS BLANCS) ===== */
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin-bottom:10px;
+    font-size:18px;
+    background:#d4d6da;          /* gris champ */
+    border:1px solid #b0b2b6;
+    color:#333;
+    border-radius:4px;
+}
+textarea{
+    height:80px;
 }
 
-nav button {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    background: #c9a000;
-    font-weight: bold;
-    font-size: 16px;
+/* ===== Boutons ===== */
+button.add{
+    background:#b0b3b8;
+    color:#2e2e2e;
+    border:none;
+    padding:10px;
+    width:100%;
+    font-weight:600;
+    font-size:18px;
+    margin-bottom:10px;
+    border-radius:4px;
 }
 
-nav button.active {
-    background: #a88900;
-    color: white;
+button.util{
+    background:#bfc2c6;
+    color:#2e2e2e;
+    border:none;
+    padding:10px;
+    width:100%;
+    font-size:17px;
+    margin-bottom:8px;
+    border-radius:4px;
 }
 
-section {
-    display: none;
-    padding: 14px;
+button.del{
+    background:#8a8d92;
+    color:#f2f2f2;
+    border:none;
+    padding:6px 10px;
+    font-size:16px;
+    border-radius:4px;
 }
 
-section.active {
-    display: block;
+/* ===== Tableaux ===== */
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:17px;
 }
 
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 18px;
-    background: #fff3b0;
-    border: 1px solid #8a6d00;
+th{
+    background:#b9bcc1;
+    color:#2e2e2e;
+    font-weight:600;
 }
 
-textarea {
-    height: 80px;
+th, td{
+    padding:10px;
+    border:1px solid #b1b3b7;
 }
 
-button.add {
-    background: #a88900;
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 10px;
+/* Zébras GRIS (aucun blanc) */
+tr:nth-child(even){
+    background:#d8dadf;
+}
+tr:nth-child(odd){
+    background:#e3e5e9;
 }
 
-button.del {
-    background: #a93226;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    font-size: 16px;
-}
-
-button.util {
-    background: #7d6608;
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    font-size: 17px;
-    margin-bottom: 8px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 17px;
-}
-
-th, td {
-    padding: 10px;
-    border: 1px solid #7d6608;
-}
-
-tr:nth-child(even) {
-    background: #f7dc6f;
-}
-
-tr:nth-child(odd) {
-    background: #fff9c4;
-}
-
-a {
-    color: #154360;
-    word-break: break-all;
+/* Liens */
+a{
+    color:#4a6a8a;
+    word-break:break-all;
 }
 </style>
 </head>
@@ -131,16 +148,17 @@ a {
 
 <header>
     <h1>Vaccins</h1>
-    <small>v1.1 – © Pierre Charlier 2025</small>
+    <small>v1.4 – © Pierre Charlier 2025</small>
 </header>
 
 <nav>
-    <button onclick="showTab('fiche')" class="active">Ma fiche</button>
-    <button onclick="showTab('vaccins')">Vaccinations</button>
-    <button onclick="showTab('notices')">Notices</button>
-    <button onclick="showTab('resume')">Résumé</button>
+    <button class="active" onclick="showTab('fiche', this)">Ma fiche</button>
+    <button onclick="showTab('vaccins', this)">Vaccinations</button>
+    <button onclick="showTab('notices', this)">Notices</button>
+    <button onclick="showTab('resume', this)">Résumé</button>
 </nav>
 
+<!-- ===== FICHE ===== -->
 <section id="fiche" class="active">
     <h3>Informations personnelles</h3>
     <input id="nom" placeholder="Nom">
@@ -150,10 +168,11 @@ a {
 
     <button class="util" onclick="save()">💾 Sauvegarder</button>
     <button class="util" onclick="exportJSON()">⬇️ Exporter JSON</button>
-    <input type="file" id="importFile" accept=".json" onchange="importJSON(this)" style="display:none">
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(this)">
     <button class="util" onclick="document.getElementById('importFile').click()">⬆️ Importer JSON</button>
 </section>
 
+<!-- ===== VACCINS ===== -->
 <section id="vaccins">
     <h3>Vaccinations</h3>
     <input id="vaccinNom" placeholder="Nom du vaccin">
@@ -168,6 +187,7 @@ a {
     </table>
 </section>
 
+<!-- ===== NOTICES ===== -->
 <section id="notices">
     <h3>Notices</h3>
     <input id="noticeNom" placeholder="Nom du vaccin">
@@ -182,6 +202,7 @@ a {
     </table>
 </section>
 
+<!-- ===== RÉSUMÉ ===== -->
 <section id="resume">
     <h3>Résumé vaccinal</h3>
     <table>
@@ -194,109 +215,101 @@ a {
 
 <script>
 let data = JSON.parse(localStorage.getItem("vaccinsData")) || {
-    fiche: {},
-    vaccins: [],
-    notices: []
+    fiche:{},
+    vaccins:[],
+    notices:[]
 };
 
-function save() {
+function save(){
     localStorage.setItem("vaccinsData", JSON.stringify(data));
     alert("Données sauvegardées");
 }
 
-function exportJSON() {
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+function exportJSON(){
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "vaccins.json";
     a.click();
 }
 
-function importJSON(input) {
+function importJSON(input){
     const file = input.files[0];
-    if (!file) return;
+    if(!file) return;
     const reader = new FileReader();
     reader.onload = e => {
-        try {
+        try{
             const obj = JSON.parse(e.target.result);
-            if (!obj.vaccins || !obj.notices || !obj.fiche) throw "invalid";
+            if(!obj.fiche || !Array.isArray(obj.vaccins) || !Array.isArray(obj.notices))
+                throw "invalid";
             data = obj;
-            save();
+            localStorage.setItem("vaccinsData", JSON.stringify(data));
             render();
-        } catch {
+            alert("Import réussi");
+        }catch{
             alert("Fichier JSON invalide");
         }
     };
     reader.readAsText(file);
 }
 
-function showTab(id) {
-    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+function showTab(id, btn){
+    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
     document.getElementById(id).classList.add("active");
-    event.target.classList.add("active");
+    btn.classList.add("active");
 }
 
-function addVaccin() {
-    if (!vaccinNom.value || !vaccinDate.value) return;
-    data.vaccins.push({ nom: vaccinNom.value, date: vaccinDate.value });
-    vaccinNom.value = "";
-    vaccinDate.value = "";
-    save();
-    render();
+function addVaccin(){
+    if(!vaccinNom.value || !vaccinDate.value) return;
+    data.vaccins.push({nom:vaccinNom.value, date:vaccinDate.value});
+    vaccinNom.value=""; vaccinDate.value="";
+    save(); render();
 }
 
-function addNotice() {
-    if (!noticeNom.value || !noticeURL.value) return;
-    data.notices.push({ nom: noticeNom.value, url: noticeURL.value });
-    noticeNom.value = "";
-    noticeURL.value = "";
-    save();
-    render();
+function addNotice(){
+    if(!noticeNom.value || !noticeURL.value) return;
+    data.notices.push({nom:noticeNom.value, url:noticeURL.value});
+    noticeNom.value=""; noticeURL.value="";
+    save(); render();
 }
 
-function delVaccin(i) {
-    data.vaccins.splice(i,1);
-    save();
-    render();
-}
+function delVaccin(i){ data.vaccins.splice(i,1); save(); render(); }
+function delNotice(i){ data.notices.splice(i,1); save(); render(); }
 
-function delNotice(i) {
-    data.notices.splice(i,1);
-    save();
-    render();
-}
+function render(){
+    vaccinTable.innerHTML="";
+    noticeTable.innerHTML="";
+    resumeTable.innerHTML="";
 
-function render() {
-    vaccinTable.innerHTML = "";
-    noticeTable.innerHTML = "";
-    resumeTable.innerHTML = "";
-
-    data.vaccins.forEach((v,i) => {
-        vaccinTable.innerHTML += `<tr>
+    data.vaccins.forEach((v,i)=>{
+        vaccinTable.innerHTML+=`
+        <tr>
             <td>${v.nom}</td>
             <td>${v.date}</td>
             <td><button class="del" onclick="delVaccin(${i})">✕</button></td>
         </tr>`;
-        resumeTable.innerHTML += `<tr><td>${v.nom}</td><td>${v.date}</td></tr>`;
+        resumeTable.innerHTML+=`<tr><td>${v.nom}</td><td>${v.date}</td></tr>`;
     });
 
-    data.notices.forEach((n,i) => {
-        noticeTable.innerHTML += `<tr>
+    data.notices.forEach((n,i)=>{
+        noticeTable.innerHTML+=`
+        <tr>
             <td>${n.nom}</td>
             <td><a href="${n.url}" target="_blank">${n.url}</a></td>
             <td><button class="del" onclick="delNotice(${i})">✕</button></td>
         </tr>`;
     });
 
-    ["nom","prenom","naissance","remarque"].forEach(id => {
+    ["nom","prenom","naissance","remarque"].forEach(id=>{
         document.getElementById(id).value = data.fiche[id] || "";
     });
 }
 
-["nom","prenom","naissance","remarque"].forEach(id => {
-    document.getElementById(id).addEventListener("input", e => {
+["nom","prenom","naissance","remarque"].forEach(id=>{
+    document.getElementById(id).addEventListener("input", e=>{
         data.fiche[id] = e.target.value;
+        localStorage.setItem("vaccinsData", JSON.stringify(data));
     });
 });
 
