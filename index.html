@@ -9,7 +9,7 @@
 /* ===== Base ===== */
 body{
     font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-    background:#e1e1e1;          /* gris perle */
+    background:#e1e1e1;
     margin:0;
     font-size:18px;
     color:#333;
@@ -17,130 +17,56 @@ body{
 
 /* ===== En-tête ===== */
 header{
-    background:#b3b6bb;          /* gris doux */
+    background:#b3b6bb;
     color:#2e2e2e;
     text-align:center;
     padding:16px;
 }
-header h1{
-    margin:0;
-    font-size:28px;
-    font-weight:600;
-}
-header small{
-    display:block;
-    margin-top:6px;
-    font-size:14px;
-    color:#4f4f4f;
-}
+header h1{margin:0;font-size:28px;font-weight:600;}
+header small{display:block;margin-top:6px;font-size:14px;color:#4f4f4f;}
 
 /* ===== Navigation ===== */
-nav{
-    display:flex;
-    background:#c4c7cc;
-}
+nav{display:flex;background:#c4c7cc;}
 nav button{
-    flex:1;
-    padding:14px;
-    border:none;
-    background:#c4c7cc;
-    font-weight:600;
-    font-size:16px;
-    color:#444;
+    flex:1;padding:14px;border:none;
+    background:#c4c7cc;font-weight:600;font-size:16px;color:#444;
 }
-nav button.active{
-    background:#aeb1b6;
-    color:#2f2f2f;
-}
+nav button.active{background:#aeb1b6;color:#2f2f2f;}
 
 /* ===== Sections ===== */
-section{
-    display:none;
-    padding:14px;
-}
-section.active{
-    display:block;
-}
+section{display:none;padding:14px;}
+section.active{display:block;}
 
-/* ===== Champs (GRIS, PAS BLANCS) ===== */
+/* ===== Champs ===== */
 input, textarea{
-    width:100%;
-    padding:10px;
-    margin-bottom:10px;
-    font-size:18px;
-    background:#d4d6da;          /* gris champ */
-    border:1px solid #b0b2b6;
-    color:#333;
-    border-radius:4px;
+    width:100%;padding:10px;margin-bottom:10px;
+    font-size:18px;background:#d4d6da;
+    border:1px solid #b0b2b6;color:#333;border-radius:4px;
 }
-textarea{
-    height:80px;
-}
+textarea{height:80px;}
 
 /* ===== Boutons ===== */
-button.add{
-    background:#b0b3b8;
-    color:#2e2e2e;
-    border:none;
-    padding:10px;
-    width:100%;
-    font-weight:600;
-    font-size:18px;
-    margin-bottom:10px;
-    border-radius:4px;
+button.add, button.util{
+    background:#bfc2c6;color:#2e2e2e;border:none;
+    padding:10px;width:100%;font-size:17px;
+    margin-bottom:8px;border-radius:4px;font-weight:600;
 }
-
-button.util{
-    background:#bfc2c6;
-    color:#2e2e2e;
-    border:none;
-    padding:10px;
-    width:100%;
-    font-size:17px;
-    margin-bottom:8px;
-    border-radius:4px;
-}
-
 button.del{
-    background:#8a8d92;
-    color:#f2f2f2;
-    border:none;
-    padding:6px 10px;
-    font-size:16px;
-    border-radius:4px;
+    background:#8a8d92;color:#f2f2f2;border:none;
+    padding:6px 10px;font-size:16px;border-radius:4px;
 }
 
 /* ===== Tableaux ===== */
-table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:17px;
-}
-
+table{width:100%;border-collapse:collapse;font-size:17px;}
 th{
-    background:#b9bcc1;
-    color:#2e2e2e;
-    font-weight:600;
+    background:#b9bcc1;color:#2e2e2e;font-weight:600;
+    cursor:pointer;
 }
+th, td{padding:10px;border:1px solid #b1b3b7;}
+tr:nth-child(even){background:#d8dadf;}
+tr:nth-child(odd){background:#e3e5e9;}
 
-th, td{
-    padding:10px;
-    border:1px solid #b1b3b7;
-}
-
-/* Zébras GRIS (aucun blanc) */
-tr:nth-child(even){
-    background:#d8dadf;
-}
-tr:nth-child(odd){
-    background:#e3e5e9;
-}
-
-/* Liens */
-a{
-    color:#4a6a8a;
-    word-break:break-all;
-}
+a{color:#4a6a8a;word-break:break-all;}
 </style>
 </head>
 
@@ -148,17 +74,16 @@ a{
 
 <header>
     <h1>Vaccins</h1>
-    <small>v1.4 – © Pierre Charlier 2025</small>
+    <small>v1.5 – © Pierre Charlier 2025</small>
 </header>
 
 <nav>
-    <button class="active" onclick="showTab('fiche', this)">Ma fiche</button>
-    <button onclick="showTab('vaccins', this)">Vaccinations</button>
-    <button onclick="showTab('notices', this)">Notices</button>
-    <button onclick="showTab('resume', this)">Résumé</button>
+    <button class="active" onclick="showTab('fiche',this)">Ma fiche</button>
+    <button onclick="showTab('vaccins',this)">Vaccinations</button>
+    <button onclick="showTab('notices',this)">Notices</button>
+    <button onclick="showTab('resume',this)">Résumé</button>
 </nav>
 
-<!-- ===== FICHE ===== -->
 <section id="fiche" class="active">
     <h3>Informations personnelles</h3>
     <input id="nom" placeholder="Nom">
@@ -172,7 +97,6 @@ a{
     <button class="util" onclick="document.getElementById('importFile').click()">⬆️ Importer JSON</button>
 </section>
 
-<!-- ===== VACCINS ===== -->
 <section id="vaccins">
     <h3>Vaccinations</h3>
     <input id="vaccinNom" placeholder="Nom du vaccin">
@@ -181,13 +105,16 @@ a{
 
     <table>
         <thead>
-            <tr><th>Vaccin</th><th>Date</th><th></th></tr>
+            <tr>
+                <th onclick="setSort('vaccins','nom')">Vaccin</th>
+                <th onclick="setSort('vaccins','date')">Date</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody id="vaccinTable"></tbody>
     </table>
 </section>
 
-<!-- ===== NOTICES ===== -->
 <section id="notices">
     <h3>Notices</h3>
     <input id="noticeNom" placeholder="Nom du vaccin">
@@ -196,18 +123,24 @@ a{
 
     <table>
         <thead>
-            <tr><th>Vaccin</th><th>Notice</th><th></th></tr>
+            <tr>
+                <th onclick="setSort('notices','nom')">Vaccin</th>
+                <th>Notice</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody id="noticeTable"></tbody>
     </table>
 </section>
 
-<!-- ===== RÉSUMÉ ===== -->
 <section id="resume">
     <h3>Résumé vaccinal</h3>
     <table>
         <thead>
-            <tr><th>Vaccin</th><th>Date</th></tr>
+            <tr>
+                <th onclick="setSort('vaccins','nom')">Vaccin</th>
+                <th onclick="setSort('vaccins','date')">Date</th>
+            </tr>
         </thead>
         <tbody id="resumeTable"></tbody>
     </table>
@@ -215,101 +148,110 @@ a{
 
 <script>
 let data = JSON.parse(localStorage.getItem("vaccinsData")) || {
-    fiche:{},
-    vaccins:[],
-    notices:[]
+    fiche:{}, vaccins:[], notices:[]
 };
+
+let sortState = { section:null, field:null, asc:true };
 
 function save(){
     localStorage.setItem("vaccinsData", JSON.stringify(data));
-    alert("Données sauvegardées");
 }
 
 function exportJSON(){
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "vaccins.json";
-    a.click();
+    const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob); a.download="vaccins.json"; a.click();
 }
 
 function importJSON(input){
-    const file = input.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
+    const file=input.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=e=>{
         try{
-            const obj = JSON.parse(e.target.result);
-            if(!obj.fiche || !Array.isArray(obj.vaccins) || !Array.isArray(obj.notices))
-                throw "invalid";
-            data = obj;
-            localStorage.setItem("vaccinsData", JSON.stringify(data));
-            render();
+            const obj=JSON.parse(e.target.result);
+            if(!obj.fiche||!Array.isArray(obj.vaccins)||!Array.isArray(obj.notices)) throw "";
+            data=obj; save(); render();
             alert("Import réussi");
-        }catch{
-            alert("Fichier JSON invalide");
-        }
+        }catch{ alert("Fichier JSON invalide"); }
     };
     reader.readAsText(file);
 }
 
-function showTab(id, btn){
+function showTab(id,btn){
     document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
     document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-    btn.classList.add("active");
+    document.getElementById(id).classList.add("active"); btn.classList.add("active");
 }
 
 function addVaccin(){
-    if(!vaccinNom.value || !vaccinDate.value) return;
-    data.vaccins.push({nom:vaccinNom.value, date:vaccinDate.value});
-    vaccinNom.value=""; vaccinDate.value="";
-    save(); render();
+    if(!vaccinNom.value||!vaccinDate.value) return;
+    data.vaccins.push({nom:vaccinNom.value,date:vaccinDate.value});
+    vaccinNom.value=""; vaccinDate.value=""; save(); render();
 }
 
 function addNotice(){
-    if(!noticeNom.value || !noticeURL.value) return;
-    data.notices.push({nom:noticeNom.value, url:noticeURL.value});
-    noticeNom.value=""; noticeURL.value="";
-    save(); render();
+    if(!noticeNom.value||!noticeURL.value) return;
+    data.notices.push({nom:noticeNom.value,url:noticeURL.value});
+    noticeNom.value=""; noticeURL.value=""; save(); render();
 }
 
-function delVaccin(i){ data.vaccins.splice(i,1); save(); render(); }
-function delNotice(i){ data.notices.splice(i,1); save(); render(); }
+function delVaccin(i){
+    if(!confirm("Confirmer la suppression de ce vaccin ?")) return;
+    data.vaccins.splice(i,1); save(); render();
+}
+function delNotice(i){
+    if(!confirm("Confirmer la suppression de cette notice ?")) return;
+    data.notices.splice(i,1); save(); render();
+}
 
+/* ===== TRI ===== */
+function setSort(section, field){
+    if(sortState.section===section && sortState.field===field){
+        sortState.asc=!sortState.asc;
+    }else{
+        sortState={section,field,asc:true};
+    }
+    render();
+}
+
+function getSorted(arr){
+    if(!sortState.field) return [...arr];
+    return [...arr].sort((a,b)=>{
+        let x=a[sortState.field], y=b[sortState.field];
+        if(sortState.field==="date"){ x=new Date(x); y=new Date(y); }
+        return (x>y?1:-1)*(sortState.asc?1:-1);
+    });
+}
+
+/* ===== RENDER ===== */
 function render(){
-    vaccinTable.innerHTML="";
-    noticeTable.innerHTML="";
-    resumeTable.innerHTML="";
+    vaccinTable.innerHTML=""; noticeTable.innerHTML=""; resumeTable.innerHTML="";
 
-    data.vaccins.forEach((v,i)=>{
+    const vaccins = sortState.section==="vaccins" ? getSorted(data.vaccins) : data.vaccins;
+
+    vaccins.forEach((v,i)=>{
         vaccinTable.innerHTML+=`
-        <tr>
-            <td>${v.nom}</td>
-            <td>${v.date}</td>
-            <td><button class="del" onclick="delVaccin(${i})">✕</button></td>
-        </tr>`;
+        <tr><td>${v.nom}</td><td>${v.date}</td>
+        <td><button class="del" onclick="delVaccin(${i})">✕</button></td></tr>`;
         resumeTable.innerHTML+=`<tr><td>${v.nom}</td><td>${v.date}</td></tr>`;
     });
 
-    data.notices.forEach((n,i)=>{
+    const notices = sortState.section==="notices" ? getSorted(data.notices) : data.notices;
+    notices.forEach((n,i)=>{
         noticeTable.innerHTML+=`
-        <tr>
-            <td>${n.nom}</td>
-            <td><a href="${n.url}" target="_blank">${n.url}</a></td>
-            <td><button class="del" onclick="delNotice(${i})">✕</button></td>
-        </tr>`;
+        <tr><td>${n.nom}</td>
+        <td><a href="${n.url}" target="_blank">${n.url}</a></td>
+        <td><button class="del" onclick="delNotice(${i})">✕</button></td></tr>`;
     });
 
     ["nom","prenom","naissance","remarque"].forEach(id=>{
-        document.getElementById(id).value = data.fiche[id] || "";
+        document.getElementById(id).value=data.fiche[id]||"";
     });
 }
 
 ["nom","prenom","naissance","remarque"].forEach(id=>{
-    document.getElementById(id).addEventListener("input", e=>{
-        data.fiche[id] = e.target.value;
-        localStorage.setItem("vaccinsData", JSON.stringify(data));
+    document.getElementById(id).addEventListener("input",e=>{
+        data.fiche[id]=e.target.value; save();
     });
 });
 
