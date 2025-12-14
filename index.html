@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>Vaccins</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style>
-body{
+  body{
     font-family:-apple-system,BlinkMacSystemFont,sans-serif;
     background:#e1e1e1;
     margin:0;
     font-size:18px;
     color:#333;
-}
-header{
+  }
+
+  header{
     background:#b3b6bb;
     text-align:center;
     padding:16px;
-}
-header h1{
+  }
+  header h1{
     margin:0;
     font-size:30px;
     font-weight:600;
-}
-#currentLabel{
+  }
+  #currentLabel{
     font-size:16px;
     margin-top:4px;
-}
-#copyright{
+  }
+  #copyright{
     font-size:14px;
     margin-top:6px;
     color:#555;
-}
+  }
 
-nav{
+  nav{
     display:flex;
     background:#c4c7cc;
-}
-nav button{
+  }
+  nav button{
     flex:1;
     padding:16px;
     border:none;
@@ -45,20 +46,20 @@ nav button{
     font-weight:600;
     font-size:18px;
     color:#444;
-}
-nav button.active{
+  }
+  nav button.active{
     background:#aeb1b6;
-}
+  }
 
-section{
+  section{
     display:none;
     padding:14px;
-}
-section.active{
+  }
+  section.active{
     display:block;
-}
+  }
 
-input, textarea{
+  input, textarea, select{
     width:100%;
     padding:12px;
     margin-bottom:12px;
@@ -67,10 +68,11 @@ input, textarea{
     border:1px solid #b0b2b6;
     color:#333;
     border-radius:4px;
-}
-textarea{height:90px;}
+    box-sizing:border-box;
+  }
+  textarea{height:90px;}
 
-button.util, button.add{
+  button.util, button.add{
     background:#bfc2c6;
     border:none;
     padding:12px;
@@ -79,304 +81,402 @@ button.util, button.add{
     font-size:18px;
     border-radius:4px;
     font-weight:600;
-}
-button.del, button.edit, button.saveEdit, button.cancelEdit{
+    color:#2e2e2e;
+  }
+
+  .row2{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+  }
+  .row3{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap:10px;
+  }
+
+  button.del, button.edit, button.saveEdit, button.cancelEdit{
     border:none;
     border-radius:4px;
     padding:6px 10px;
     font-size:15px;
     margin:2px;
-}
-button.del{background:#8a8d92;color:#fff;}
-button.edit{background:#9ea2a8;}
-button.saveEdit{background:#7fa37f;}
-button.cancelEdit{background:#b07a7a;}
+    color:#fff;
+  }
+  button.del{background:#8a8d92;}
+  button.edit{background:#9ea2a8;}
+  button.saveEdit{background:#6f9070;}
+  button.cancelEdit{background:#a06d6d;}
 
-table{
+  table{
     width:100%;
     border-collapse:collapse;
     font-size:18px;
-}
-th, td{
+  }
+  th, td{
     padding:12px;
     border:1px solid #b1b3b7;
-}
-th{background:#b9bcc1;}
-tr:nth-child(even){background:#d8dadf;}
-tr:nth-child(odd){background:#e3e5e9;}
+  }
+  th{background:#b9bcc1;}
+  tr:nth-child(even){background:#d8dadf;}
+  tr:nth-child(odd){background:#e3e5e9;}
 
-a{color:#4a6a8a;}
+  a{color:#4a6a8a; word-break:break-all;}
 </style>
 </head>
 
 <body>
 
 <header>
-    <h1>Vaccins</h1>
-    <div id="currentLabel">Personne 1</div>
-    <div id="copyright">© Pierre Charlier 2025 — v1.9c</div>
+  <h1>Vaccins</h1>
+  <div id="currentLabel">Personne 1</div>
+  <div id="copyright">© Pierre Charlier 2025 — v2.0</div>
 </header>
 
 <nav>
-    <button class="active" onclick="showTab('fiche',this)">Fiche</button>
-    <button onclick="showTab('vaccins',this)">Vaccinations</button>
-    <button onclick="showTab('notices',this)">Notices</button>
-    <button onclick="showTab('resume',this)">Résumé</button>
+  <button class="active" onclick="showTab('fiche',this)">Fiche</button>
+  <button onclick="showTab('vaccins',this)">Vaccinations</button>
+  <button onclick="showTab('notices',this)">Notices</button>
+  <button onclick="showTab('resume',this)">Résumé</button>
 </nav>
 
 <!-- ================= FICHE ================= -->
 <section id="fiche" class="active">
 
-<h3>Personne</h3>
-<button class="util" onclick="addPerson()">➕ Nouvelle personne</button>
+  <h3>Personne</h3>
 
-<h3>Informations personnelles</h3>
-<input id="nom" placeholder="Nom">
-<input id="prenom" placeholder="Prénom">
-<input id="naissance" type="date">
-<textarea id="remarque" placeholder="Remarques"></textarea>
+  <select id="personSelect" onchange="switchPerson(this.value)"></select>
 
-<button class="util" onclick="save()">💾 Sauvegarder</button>
-<button class="util" onclick="exportJSON()">⬇️ Exporter JSON</button>
-<input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(this)">
-<button class="util" onclick="document.getElementById('importFile').click()">⬆️ Importer JSON</button>
+  <div class="row2">
+    <input id="newPersonName" placeholder="Nom nouvelle personne (ex. Marie)" />
+    <button class="util" onclick="addPerson()">➕ Ajouter</button>
+  </div>
+
+  <div class="row2">
+    <button class="util" onclick="renamePerson()">✏️ Renommer la personne</button>
+    <button class="util" onclick="deletePerson()">🗑️ Supprimer la personne</button>
+  </div>
+
+  <h3>Informations personnelles</h3>
+  <input id="nom" placeholder="Nom" />
+  <input id="prenom" placeholder="Prénom" />
+  <input id="naissance" type="date" />
+  <textarea id="remarque" placeholder="Remarques"></textarea>
+
+  <button class="util" onclick="save(true)">💾 Sauvegarder</button>
+  <button class="util" onclick="exportJSON()">⬇️ Exporter JSON</button>
+  <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(this)" />
+  <button class="util" onclick="document.getElementById('importFile').click()">⬆️ Importer JSON</button>
 
 </section>
 
 <!-- ================= VACCINS ================= -->
 <section id="vaccins">
 
-<h3>Vaccinations</h3>
-<input id="vaccinNom" placeholder="Nom du vaccin">
-<input id="vaccinDate" type="date">
-<button class="add" onclick="addVaccin()">Ajouter</button>
+  <h3>Vaccinations</h3>
+  <input id="vaccinNom" placeholder="Nom du vaccin" />
+  <input id="vaccinDate" type="date" />
+  <button class="add" onclick="addVaccin()">Ajouter</button>
 
-<table>
-<thead>
-<tr>
-    <th>Vaccin</th>
-    <th>Date</th>
-    <th>Actions</th>
-</tr>
-</thead>
-<tbody id="vaccinTable"></tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>Vaccin</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="vaccinTable"></tbody>
+  </table>
 
 </section>
 
 <!-- ================= NOTICES ================= -->
 <section id="notices">
 
-<h3>Notices</h3>
-<input id="noticeNom" placeholder="Nom du vaccin">
-<input id="noticeURL" placeholder="URL de la notice">
-<button class="add" onclick="addNotice()">Ajouter</button>
+  <h3>Notices</h3>
+  <input id="noticeNom" placeholder="Nom du vaccin" />
+  <input id="noticeURL" placeholder="URL de la notice" />
+  <button class="add" onclick="addNotice()">Ajouter</button>
 
-<table>
-<thead>
-<tr>
-    <th>Vaccin</th>
-    <th>Notice</th>
-    <th></th>
-</tr>
-</thead>
-<tbody id="noticeTable"></tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>Vaccin</th>
+        <th>Notice</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="noticeTable"></tbody>
+  </table>
 
 </section>
 
 <!-- ================= RÉSUMÉ ================= -->
 <section id="resume">
 
-<h3>Résumé vaccinal</h3>
-<table>
-<thead>
-<tr>
-    <th>Vaccin</th>
-    <th>Date</th>
-</tr>
-</thead>
-<tbody id="resumeTable"></tbody>
-</table>
+  <h3>Résumé vaccinal</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Vaccin</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="resumeTable"></tbody>
+  </table>
 
 </section>
 
 <script>
-/* ===== Données ===== */
+/* ================= Données ================= */
 let data = JSON.parse(localStorage.getItem("vaccinsData")) || {
-    currentPerson: 0,
-    persons: []
+  currentPerson: 0,
+  persons: []
 };
 
-/* ===== Initialisation sûre ===== */
-if(data.persons.length === 0){
-    data.persons.push({
-        label: "Personne 1",
-        fiche: {},
-        vaccins: [],
-        notices: []
-    });
+function ensureInit(){
+  if(!Array.isArray(data.persons)) data.persons = [];
+  if(data.persons.length === 0){
+    data.persons.push({ label:"Personne 1", fiche:{}, vaccins:[], notices:[] });
+  }
+  if(typeof data.currentPerson !== "number") data.currentPerson = 0;
+  if(data.currentPerson < 0) data.currentPerson = 0;
+  if(data.currentPerson >= data.persons.length) data.currentPerson = data.persons.length - 1;
 }
 
-/* ===== Accès courant ===== */
 function current(){
-    return data.persons[data.currentPerson];
+  return data.persons[data.currentPerson];
 }
 
-/* ===== Sauvegarde ===== */
-function save(){
-    localStorage.setItem("vaccinsData", JSON.stringify(data));
+function save(showMsg=false){
+  localStorage.setItem("vaccinsData", JSON.stringify(data));
+  if(showMsg) alert("Données sauvegardées");
 }
 
-/* ===== Export / Import JSON ===== */
+/* ================= Export / Import ================= */
 function exportJSON(){
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "vaccins.json";
-    a.click();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "vaccins.json";
+  a.click();
 }
 
 function importJSON(input){
-    const file = input.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-        try{
-            const obj = JSON.parse(e.target.result);
-            if(!obj.persons) throw "";
-            data = obj;
-            save();
-            render();
-            alert("Restauration réussie");
-        }catch{
-            alert("Fichier JSON invalide");
-        }
-    };
-    reader.readAsText(file);
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const obj = JSON.parse(e.target.result);
+      if(!obj || !Array.isArray(obj.persons)) throw new Error("invalid");
+      data = obj;
+      ensureInit();
+      save(false);
+      render();
+      alert("Restauration réussie");
+    }catch{
+      alert("Fichier JSON invalide");
+    }
+  };
+  reader.readAsText(file);
 }
 
-/* ===== Personnes ===== */
-function addPerson(){
-    const label = prompt("Nom de la nouvelle personne :");
-    if(!label) return;
-
-    data.persons.push({
-        label: label,
-        fiche: {},
-        vaccins: [],
-        notices: []
-    });
-
-    data.currentPerson = data.persons.length - 1;
-    save();
-    render();
-}
-
-/* ===== Navigation ===== */
+/* ================= Navigation ================= */
 function showTab(id, btn){
-    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-    btn.classList.add("active");
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active");
 }
 
-/* ===== Vaccins ===== */
+/* ================= Personnes ================= */
+function rebuildPersonSelect(){
+  const sel = document.getElementById("personSelect");
+  sel.innerHTML = "";
+  data.persons.forEach((p,i)=>{
+    const opt = document.createElement("option");
+    opt.value = String(i);
+    opt.textContent = p.label || ("Personne " + (i+1));
+    sel.appendChild(opt);
+  });
+  sel.value = String(data.currentPerson);
+}
+
+function switchPerson(i){
+  data.currentPerson = parseInt(i, 10);
+  ensureInit();
+  save(false);
+  render();
+}
+
+function addPerson(){
+  const name = (document.getElementById("newPersonName").value || "").trim();
+  if(!name){
+    alert("Entre un nom pour la nouvelle personne.");
+    return;
+  }
+
+  data.persons.push({ label:name, fiche:{}, vaccins:[], notices:[] });
+  data.currentPerson = data.persons.length - 1;
+  document.getElementById("newPersonName").value = "";
+  save(false);
+  render();
+}
+
+function renamePerson(){
+  const p = current();
+  const oldName = p.label || "";
+  const newName = (prompt("Nouveau nom pour la personne :", oldName) || "").trim();
+  if(!newName) return;
+  p.label = newName;
+  save(false);
+  render();
+}
+
+function deletePerson(){
+  if(data.persons.length <= 1){
+    alert("Impossible : il doit rester au moins une personne.");
+    return;
+  }
+  const p = current();
+  const name = p.label || "cette personne";
+  if(!confirm("Confirmer la suppression de " + name + " ?\n(Tous ses vaccins et notices seront supprimés)")) return;
+
+  data.persons.splice(data.currentPerson, 1);
+  if(data.currentPerson >= data.persons.length) data.currentPerson = data.persons.length - 1;
+  ensureInit();
+  save(false);
+  render();
+}
+
+/* ================= Vaccins ================= */
 function addVaccin(){
-    if(!vaccinNom.value || !vaccinDate.value) return;
-    current().vaccins.push({nom: vaccinNom.value, date: vaccinDate.value});
-    vaccinNom.value = "";
-    vaccinDate.value = "";
-    save();
-    render();
+  const nom = (vaccinNom.value || "").trim();
+  const date = vaccinDate.value;
+  if(!nom || !date) return;
+  current().vaccins.push({nom, date});
+  vaccinNom.value = "";
+  vaccinDate.value = "";
+  save(false);
+  render();
 }
 
 function delVaccin(i){
-    if(!confirm("Supprimer ce vaccin ?")) return;
-    current().vaccins.splice(i, 1);
-    save();
-    render();
+  if(!confirm("Supprimer ce vaccin ?")) return;
+  current().vaccins.splice(i, 1);
+  save(false);
+  render();
 }
 
 function editVaccin(i){
-    const v = current().vaccins[i];
-    vaccinTable.children[i].innerHTML = `
-        <td><input value="${v.nom}"></td>
-        <td><input type="date" value="${v.date}"></td>
-        <td>
-            <button class="saveEdit" onclick="saveVaccinEdit(${i},this)">💾</button>
-            <button class="cancelEdit" onclick="render()">✖</button>
-        </td>`;
+  const v = current().vaccins[i];
+  const row = vaccinTable.querySelectorAll("tr")[i];
+  row.innerHTML = `
+    <td><input value="${escapeHtml(v.nom)}"></td>
+    <td><input type="date" value="${escapeHtml(v.date)}"></td>
+    <td>
+      <button class="saveEdit" onclick="saveVaccinEdit(${i},this)">💾</button>
+      <button class="cancelEdit" onclick="render()">✖</button>
+    </td>
+  `;
 }
 
 function saveVaccinEdit(i, btn){
-    const row = btn.closest("tr");
-    const inputs = row.querySelectorAll("input");
-    current().vaccins[i] = {nom: inputs[0].value, date: inputs[1].value};
-    save();
-    render();
+  const row = btn.closest("tr");
+  const inputs = row.querySelectorAll("input");
+  const nom = (inputs[0].value || "").trim();
+  const date = inputs[1].value;
+  if(!nom || !date){
+    alert("Nom et date obligatoires.");
+    return;
+  }
+  current().vaccins[i] = {nom, date};
+  save(false);
+  render();
 }
 
-/* ===== Notices ===== */
+/* ================= Notices ================= */
 function addNotice(){
-    if(!noticeNom.value || !noticeURL.value) return;
-    current().notices.push({nom: noticeNom.value, url: noticeURL.value});
-    noticeNom.value = "";
-    noticeURL.value = "";
-    save();
-    render();
+  const nom = (noticeNom.value || "").trim();
+  const url = (noticeURL.value || "").trim();
+  if(!nom || !url) return;
+  current().notices.push({nom, url});
+  noticeNom.value = "";
+  noticeURL.value = "";
+  save(false);
+  render();
 }
 
 function delNotice(i){
-    if(!confirm("Supprimer cette notice ?")) return;
-    current().notices.splice(i, 1);
-    save();
-    render();
+  if(!confirm("Supprimer cette notice ?")) return;
+  current().notices.splice(i, 1);
+  save(false);
+  render();
 }
 
-/* ===== Affichage ===== */
+/* ================= Render ================= */
 function render(){
-    const p = current();
-    currentLabel.textContent = p.label;
+  ensureInit();
 
-    ["nom","prenom","naissance","remarque"].forEach(id=>{
-        document.getElementById(id).value = p.fiche[id] || "";
-    });
+  rebuildPersonSelect();
 
-    vaccinTable.innerHTML = "";
-    resumeTable.innerHTML = "";
-    p.vaccins.forEach((v,i)=>{
-        vaccinTable.innerHTML += `
-        <tr>
-            <td>${v.nom}</td>
-            <td>${v.date}</td>
-            <td>
-                <button class="edit" onclick="editVaccin(${i})">✏️</button>
-                <button class="del" onclick="delVaccin(${i})">🗑️</button>
-            </td>
-        </tr>`;
-        resumeTable.innerHTML += `<tr><td>${v.nom}</td><td>${v.date}</td></tr>`;
-    });
+  const p = current();
+  currentLabel.textContent = p.label || "Personne";
 
-    noticeTable.innerHTML = "";
-    p.notices.forEach((n,i)=>{
-        noticeTable.innerHTML += `
-        <tr>
-            <td>${n.nom}</td>
-            <td><a href="${n.url}" target="_blank">${n.url}</a></td>
-            <td><button class="del" onclick="delNotice(${i})">🗑️</button></td>
-        </tr>`;
-    });
+  ["nom","prenom","naissance","remarque"].forEach(id=>{
+    document.getElementById(id).value = p.fiche[id] || "";
+  });
+
+  // Vaccins + Résumé
+  vaccinTable.innerHTML = "";
+  resumeTable.innerHTML = "";
+  p.vaccins.forEach((v,i)=>{
+    vaccinTable.innerHTML += `
+      <tr>
+        <td>${escapeHtml(v.nom)}</td>
+        <td>${escapeHtml(v.date)}</td>
+        <td>
+          <button class="edit" onclick="editVaccin(${i})">✏️</button>
+          <button class="del" onclick="delVaccin(${i})">🗑️</button>
+        </td>
+      </tr>`;
+    resumeTable.innerHTML += `<tr><td>${escapeHtml(v.nom)}</td><td>${escapeHtml(v.date)}</td></tr>`;
+  });
+
+  // Notices
+  noticeTable.innerHTML = "";
+  p.notices.forEach((n,i)=>{
+    noticeTable.innerHTML += `
+      <tr>
+        <td>${escapeHtml(n.nom)}</td>
+        <td><a href="${escapeAttr(n.url)}" target="_blank">${escapeHtml(n.url)}</a></td>
+        <td><button class="del" onclick="delNotice(${i})">🗑️</button></td>
+      </tr>`;
+  });
 }
 
-/* ===== Écouteurs fiche ===== */
+/* ================= Helpers ================= */
+function escapeHtml(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#39;");
+}
+function escapeAttr(s){ return escapeHtml(s); }
+
+/* ================= Écouteurs fiche ================= */
 ["nom","prenom","naissance","remarque"].forEach(id=>{
-    document.getElementById(id).addEventListener("input", e=>{
-        current().fiche[id] = e.target.value;
-        save();
-    });
+  document.getElementById(id).addEventListener("input", e=>{
+    current().fiche[id] = e.target.value;
+    save(false);
+  });
 });
 
+ensureInit();
 render();
 </script>
 
