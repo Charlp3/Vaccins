@@ -74,7 +74,7 @@ a{color:#4a6a8a;word-break:break-all;}
 
 <header>
     <h1>Vaccins</h1>
-    <small>v1.6 – © Pierre Charlier 2025</small>
+    <small>v1.7 – © Pierre Charlier 2025</small>
 </header>
 
 <nav>
@@ -151,7 +151,11 @@ let data = JSON.parse(localStorage.getItem("vaccinsData")) || {
     fiche:{}, vaccins:[], notices:[]
 };
 
-let sortState = { section:null, field:null, asc:true };
+let sortState = JSON.parse(localStorage.getItem("vaccinsSort")) || {
+    section: null,
+    field: null,
+    asc: true
+};
 
 function save(){
     localStorage.setItem("vaccinsData", JSON.stringify(data));
@@ -207,10 +211,11 @@ function delNotice(i){
 /* ===== TRI ===== */
 function setSort(section, field){
     if(sortState.section===section && sortState.field===field){
-        sortState.asc=!sortState.asc;
+        sortState.asc = !sortState.asc;
     }else{
-        sortState={section,field,asc:true};
+        sortState = { section, field, asc:true };
     }
+    localStorage.setItem("vaccinsSort", JSON.stringify(sortState));
     render();
 }
 
