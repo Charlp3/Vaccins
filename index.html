@@ -74,7 +74,7 @@ a{color:#4a6a8a;word-break:break-all;}
 
 <header>
     <h1>Vaccins</h1>
-    <small>v1.6 – © Pierre Charlier 2025</small>
+    <small>v1.5 – © Pierre Charlier 2025</small>
 </header>
 
 <nav>
@@ -223,11 +223,6 @@ function getSorted(arr){
     });
 }
 
-function formatDateFR(iso){
-    if(!iso) return "";
-    const d = new Date(iso);
-    return d.toLocaleDateString("fr-FR");
-}
 /* ===== RENDER ===== */
 function render(){
     vaccinTable.innerHTML=""; noticeTable.innerHTML=""; resumeTable.innerHTML="";
@@ -236,9 +231,9 @@ function render(){
 
     vaccins.forEach((v,i)=>{
         vaccinTable.innerHTML+=`
-        239 <tr><td>${v.nom}</td><td>${formatDateFR(v.date)}</td>
+        <tr><td>${v.nom}</td><td>${v.date}</td>
         <td><button class="del" onclick="delVaccin(${i})">✕</button></td></tr>`;
-        241 resumeTable.innerHTML+=`<tr><td>${v.nom}</td><td>${formatDateFR(v.date)}</td></tr>`;
+        resumeTable.innerHTML+=`<tr><td>${v.nom}</td><td>${v.date}</td></tr>`;
     });
 
     const notices = sortState.section==="notices" ? getSorted(data.notices) : data.notices;
