@@ -74,7 +74,7 @@ a{color:#4a6a8a;word-break:break-all;}
 
 <header>
     <h1>Vaccins</h1>
-    <small>v1.5 – © Pierre Charlier 2025</small>
+    <small>v1.6 – © Pierre Charlier 2025</small>
 </header>
 
 <nav>
@@ -224,17 +224,35 @@ function getSorted(arr){
 }
 
 /* ===== RENDER ===== */
+function formatDateFR(iso){
+    if(!iso) return "";
+    const d = new Date(iso);
+    return d.toLocaleDateString("fr-FR");
+}
 function render(){
     vaccinTable.innerHTML=""; noticeTable.innerHTML=""; resumeTable.innerHTML="";
 
-    const vaccins = sortState.section==="vaccins" ? getSorted(data.vaccins) : data.vaccins;
+    const vaccins =
+    sortState.section==="vaccins"
+        ? getSorted(data.vaccins)
+        : data.vaccins;
 
-    vaccins.forEach((v,i)=>{
-        vaccinTable.innerHTML+=`
-        <tr><td>${v.nom}</td><td>${v.date}</td>
-        <td><button class="del" onclick="delVaccin(${i})">✕</button></td></tr>`;
-        resumeTable.innerHTML+=`<tr><td>${v.nom}</td><td>${v.date}</td></tr>`;
-    });
+vaccins.forEach((v,i)=>{
+    vaccinTable.innerHTML += `
+        <tr>
+            <td>${v.nom}</td>
+            <td>${formatDateFR(v.date)}</td>
+            <td>
+                <button class="del" onclick="delVaccin(${i})">×</button>
+            </td>
+        </tr>`;
+
+    resumeTable.innerHTML += `
+        <tr>
+            <td>${v.nom}</td>
+            <td>${formatDateFR(v.date)}</td>
+        </tr>`;
+});
 
     const notices = sortState.section==="notices" ? getSorted(data.notices) : data.notices;
     notices.forEach((n,i)=>{
